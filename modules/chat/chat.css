@@ -136,10 +136,12 @@
 }
 
 .conversation-item .ci-layout.ci-layout.withVoicemail .ci-transcript {
-  margin: 1px;
+  margin: 2px;
   background: white;
   padding: 15px;
   font-style: normal;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
 .conversation-item .ci-layout.ci-layout.withVoicemail .ci-playback {
