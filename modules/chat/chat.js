@@ -244,15 +244,37 @@ function displayChat(config) {
       formatEl
     );
 
-    $(itemEl).appendTo(parentEl);
+    if (options.hidden) $(itemEl).appendTo(parentEl).css("opacity", 0);
+    else $(itemEl).appendTo(parentEl);
     return;
   }
 
   var conversationEl = $(
-    "<div class='chatSimulator'></div>"
+    "<div id='" + config.chatId + "' class='chatSimulator'></div>"
   ).insertBefore(config.selector);
 
   for (var i = 0; i < config.messages.length; i++) {
-    renderMessage(conversationEl, config.messages[i]);
+    var options = config.messages[i];
+    options.hidden = true;
+    renderMessage(conversationEl, options);
+  }
+
+  if (config.animation) {
+    var curDelay = 0;
+    $("#" + config.chatId + ".chatSimulator > *").each(function (i) {
+      var stepDelay = 0;
+      if (config.messages[i].delay !== undefined)
+        stepDelay = config.messages[i].delay;
+      else stepDelay = config.animation.delay;
+      $(this)
+        .delay(curDelay + stepDelay)
+        .css("opacity", 0)
+        .css("margin-top", -10)
+        .animate(
+          { opacity: 1, marginTop: 0 },
+          { queue: true, duration: "slow" }
+        );
+      curDelay = curDelay + stepDelay;
+    });
   }
 }
