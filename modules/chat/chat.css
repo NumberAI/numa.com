@@ -1,0 +1,266 @@
+.chatSimulator {
+  display: flex;
+  flex-direction: column;
+}
+
+.chatSimulator > * {
+  margin-bottom: 12px;
+}
+.chatSimulator > *:last-child {
+  margin-bottom: 0px;
+}
+
+.conversation-item {
+  display: flex;
+  flex: 0 1 auto;
+}
+
+.conversation-item > * {
+  flex: 0 1 auto;
+}
+
+.conversation-item,
+.conversation-item.dir-inbound {
+  justify-content: flex-start;
+}
+
+.conversation-item.dir-outbound {
+  justify-content: flex-end;
+}
+
+.conversation-item.dir-inline {
+  justify-content: center;
+}
+
+.conversation-item.dir-inbound .ci-body {
+  overflow: hidden;
+  border-radius: 20px;
+  border-bottom-left-radius: 0;
+}
+.conversation-item.dir-outbound .ci-body {
+  overflow: hidden;
+  border-radius: 20px;
+  border-bottom-right-radius: 0;
+}
+
+.conversation-item.dir-fullWidth {
+  width: 100%;
+}
+
+.conversation-item.dir-fullWidth > * {
+  flex: 1;
+}
+
+.conversation-item .ci-body.format-patched,
+.conversation-item .ci-body.format-rescue,
+.conversation-item .ci-body.format-hangup,
+.conversation-item .ci-body.format-voicemail {
+  background: #ddd;
+  max-width: 80%;
+  font-style: italic;
+}
+
+.conversation-item .ci-body.format-patched .ci-text,
+.conversation-item .ci-body.format-rescue .ci-text,
+.conversation-item .ci-body.format-hangup .ci-text {
+  color: #666;
+  padding-right: 12px;
+}
+
+.conversation-item .ci-body.format-order {
+  background: #9c64e4;
+  color: white;
+}
+
+.conversation-item .ci-body.format-message,
+.conversation-item .ci-body.format-image {
+  background: #ddd;
+  color: #000;
+  padding: 15px;
+  max-width: 80%;
+}
+
+.conversation-item .ci-body.format-suggestion {
+  background: white;
+  color: #2176ff;
+  padding: 15px;
+  max-width: 80%;
+}
+
+.conversation-item .ci-body.format-image {
+  padding: 0;
+}
+
+.conversation-item .ci-body.format-note {
+  color: #38382a;
+  background-color: #f9fadd;
+  padding: 15px;
+}
+
+.conversation-item .ci-body.format-note mark {
+  background-color: #f1e363;
+  border-radius: 6px;
+  padding: 5px;
+  font-weight: bold;
+}
+
+.conversation-item .ci-body.format-system {
+  color: #666;
+  background: white;
+  padding: 12px;
+  border-radius: 20px;
+}
+
+.conversation-item .ci-body.format-action {
+  color: #2176ff;
+  border: 2px solid #2176ff;
+  background: #bbd5ff;
+  padding: 15px;
+  border-radius: 20px;
+}
+
+.conversation-item.dir-outbound .ci-body {
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 20;
+}
+
+.conversation-item.dir-outbound .ci-body.format-image,
+.conversation-item.dir-outbound .ci-body.format-message {
+  color: white;
+  background: #2176ff;
+}
+
+.conversation-item .ci-layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.conversation-item .ci-layout.ci-layout.withVoicemail .ci-transcript {
+  margin: 1px;
+  background: white;
+  padding: 15px;
+  font-style: normal;
+}
+
+.conversation-item .ci-layout.ci-layout.withVoicemail .ci-playback {
+  padding: 15px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: flex-end;
+}
+
+.conversation-item
+  .ci-layout.ci-layout.withVoicemail
+  .ci-playback
+  .ci-scrubber {
+  flex: 1;
+  align-self: center;
+}
+
+.conversation-item
+  .ci-layout.ci-layout.withVoicemail
+  .ci-playback
+  > .ci-scrubber
+  > .ci-scrubTrack {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+  display: block;
+  margin-left: 10px;
+  overflow: hidden;
+}
+
+.conversation-item
+  .ci-layout.ci-layout.withVoicemail
+  .ci-playback
+  > .ci-scrubber
+  > .ci-scrubTrack
+  > .ci-scrubThumb {
+  width: 50%;
+  height: 10px;
+  margin: 1px;
+  border-radius: 100px;
+  background: white;
+}
+
+.conversation-item .ci-layout.withIcon {
+  flex-direction: row;
+}
+
+.conversation-item .ci-layout.withIcon > .ci-icon {
+  padding: 15px;
+  padding-right: 0px;
+  align-self: center;
+}
+
+.conversation-item .ci-layout > .ci-content {
+  align-self: center;
+  padding: 12px;
+}
+
+.conversation-item .ci-layout.withImage > .ci-content {
+  align-self: flex-start;
+  padding: 15px;
+}
+.conversation-item .ci-layout > .ci-greeting {
+  padding-bottom: 7px;
+}
+
+.conversation-item .ci-layout > .ci-signature {
+  font-size: 0.9em;
+  padding-top: 7px;
+  text-align: right;
+  font-weight: bold;
+  opacity: 0.8;
+}
+
+.conversation-item .ci-greeting.size-small {
+  font-size: 0.9em;
+}
+
+.conversation-item .ci-greeting.font-bold {
+  font-weight: bold;
+}
+
+.conversation-item .ci-greeting > .ci-icon-glyph {
+  padding-right: 4px;
+  font-size: 0.8em;
+}
+
+.conversation-item .ci-signature > .ci-icon-glyph {
+  padding-right: 4px;
+  font-size: 0.8em;
+}
+
+.conversation-item .ci-layout > .ci-actions {
+  text-align: right;
+  padding-top: 8px;
+}
+
+.conversation-item .ci-layout > .ci-actions .ci-actionLabel {
+  background: #2176ff;
+  color: white;
+  display: inline-block;
+  padding: 7px 15px;
+  border-radius: 2px;
+}
+
+.conversation-item .ci-icon-image {
+  max-height: 1.2em;
+}
+
+.conversation-item .ci-icon-glyph {
+  font-family: "numaicons";
+}
+
+.conversation-item .format-hangup .ci-icon-glyph {
+  color: #a03d25;
+}
+
+.conversation-item .format-rescue .ci-icon-glyph {
+  color: #2ba84a;
+}
+
+.conversation-item .format-patched .ci-icon-glyph {
+  color: #2176ff;
+}
