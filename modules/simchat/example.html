@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>SimChat Example</title>
+    <link rel="stylesheet" href="simchat.css">
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="hero-chat"></div>
+    <script>
+      $().ready(function () {
+        $("#hero-chat").simChat({
+          name: "foo",
+          messages: [
+            {
+              content: "this is a text message",
+              greeting: { name: "numa" }
+            },
+            {
+              direction: "inbound",
+              content: "this is an inbound text message"
+            },
+            {
+              format: "voicemail",
+              content: "this is a voicemail"
+            },
+            {
+              format: "hangup"
+            },
+            {
+              format: "rescued"
+            },
+            {
+              format: "patched"
+            },
+            {
+              format: "image",
+              direction: "outbound",
+              imageUrl:
+                "https://cdn.cnn.com/cnnnext/dam/assets/200910212929-02-california-air-quality-wildfires-restricted-large-tease.jpg",
+              content: "this is a image",
+              delay: 0
+            },
+            {
+              format: "image",
+              direction: "outbound",
+              imageUrl:
+                "https://cdn.cnn.com/cnnnext/dam/assets/200910212929-02-california-air-quality-wildfires-restricted-large-tease.jpg",
+              delay: 0
+            },
+            {
+              format: "image",
+              direction: "inbound",
+              imageUrl:
+                "https://ih1.redbubble.net/image.585029318.0459/flat,128x128,075,f-pad,128x128,f8f8f8.u1.jpg",
+              content: "this is a image",
+              delay: 0
+            },
+            {
+              format: "image",
+              direction: "inbound",
+              imageUrl:
+                "https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Animated_Wallpaper_Windows_10_-_Wallpaper_Engine.gif/1200px-Animated_Wallpaper_Windows_10_-_Wallpaper_Engine.gif",
+              delay: 0
+            },
+            {
+              format: "suggestion",
+              content: "this is a suggestion message"
+            },
+            {
+              format: "note",
+              content: "Hey <mark>Bob</mark> can you take a look at this?"
+            },
+            {
+              format: "order",
+              content: "this is a order message"
+            },
+            {
+              format: "system",
+              content: "<b>Numa</b> assigned this customer to <b>Bob</b>"
+            },
+            {
+              content: "this is a test message safdasdfas dsaf asfa sfsadf ",
+              direction: "outbound",
+              signature: { name: "answered" },
+              greeting: { name: "numa" }
+            },
+            {
+              format: "action",
+              content: "this is a test message safdasdfas dsaf asfa sfsadf ",
+              direction: "outbound",
+              greeting: { name: "numa" },
+              action: { button: "Enable AutoReply" }
+            },
+            {
+              content: "this is a test response",
+              direction: "inbound"
+            },
+            { content: "this is a test response" },
+            { format: "patched" }
+          ]
+        });
+      });
+    </script>
+    <script src="simchat.js"></script>
+  </body>
+  
+</html>

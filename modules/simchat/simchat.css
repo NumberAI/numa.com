@@ -1,0 +1,199 @@
+.simChat {
+  background: pink;
+}
+
+.simChat {
+  display: flex;
+  flex-direction: column;
+}
+
+.simChat > .sc-item {
+  display: flex;
+  flex: 0 1 auto;
+  margin-bottom: 0.8em;
+}
+.simChat > .sc-item:last-child {
+  margin-bottom: 0px;
+}
+
+.sc-dir-outbound {
+  justify-content: flex-end;
+}
+
+.sc-dir-inbound {
+  justify-content: flex-start;
+}
+
+.sc-dir-inline {
+  justify-content: center;
+}
+
+.sc-dir-fullwidth {
+  justify-content: center;
+  width: 100%;
+}
+
+.sc-dir-fullwidth > * {
+  flex: 1;
+}
+
+.sc-format-message > *,
+.sc-format-image .sc-item-content {
+  padding: 1em;
+}
+
+.sc-format-patched > *,
+.sc-format-rescued > *,
+.sc-format-hangup > * {
+  color: #000;
+  background: #eee;
+  padding: 1em;
+}
+
+.sc-format-voicemail > *,
+.sc-format-image > *,
+.sc-format-message.sc-dir-inbound > * {
+  color: #000;
+  background: #ddd;
+}
+
+.sc-format-message.sc-dir-outbound > *,
+.sc-format-image.sc-dir-outbound > * {
+  color: #fff;
+  background: #2176ff;
+}
+
+.sc-format-note > * {
+  color: #38382a;
+  background-color: #f9fadd;
+  padding: 1em;
+}
+
+.sc-format-note .sc-item-content mark {
+  background-color: #f1e363;
+  border-radius: 0.25em;
+  padding: 0.25em;
+  font-weight: bold;
+}
+
+.sc-format-order > * {
+  color: #fff;
+  background-color: #9c64e4;
+  padding: 1em;
+}
+
+.sc-format-suggestion > * {
+  color: #2176ff;
+  background-color: #fff;
+  padding: 1em;
+}
+
+.sc-format-system > * {
+  color: #333;
+  font-style: italic;
+  background: white;
+  padding: 0.75em;
+}
+
+.sc-format-action > * {
+  color: #2176ff;
+  border: 2px solid #2176ff;
+  background: #bbd5ff;
+  padding: 1em;
+}
+
+.sc-format-system > * {
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.sc-dir-inbound > * {
+  border-radius: 1em;
+  border-bottom-left-radius: 0;
+  overflow: hidden;
+}
+
+.sc-dir-outbound > * {
+  border-radius: 1em;
+  border-bottom-right-radius: 0;
+  overflow: hidden;
+}
+
+.sc-greeting {
+  padding-bottom: 0.5em;
+}
+
+.sc-action {
+  padding-top: 0.75em;
+  text-align: right;
+}
+
+.sc-action > .sc-action-button {
+  display: inline-block;
+  margin-left: 1em;
+  background: #fff;
+  padding: 0.5em;
+  border-radius: 0.25em;
+}
+
+.sc-signature {
+  padding-top: 0.6em;
+  text-align: right;
+}
+
+.sc-item-content .sc-icon {
+  padding-right: 0.25em;
+}
+
+.sc-layout-icon {
+  display: flex;
+  flex-direction: row;
+}
+
+.sc-layout-icon > .sc-item-icon {
+  padding-right: 1em;
+}
+
+.sc-layout-vm {
+  display: flex;
+  flex-direction: column;
+}
+
+.sc-layout-vm .sc-vm-transcription {
+  background: #fff;
+  padding: 1em;
+  margin: 2px;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+.sc-layout-vm .sc-vm-playback {
+  display: flex;
+  flex-direction: row;
+  padding: 1em;
+}
+
+.sc-vm-playback .sc-vm-scrubber {
+  display: block;
+  align-self: center;
+  background: rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 0.5em;
+  margin-left: 1em;
+  border-radius: 1em;
+  overflow: hidden;
+}
+
+.sc-vm-scrubber .sc-vm-scrubTrack {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.sc-vm-scrubber .sc-vm-scrubThumb {
+  width: 44%;
+  height: 100%;
+  background: #fff;
+  border-radius: 1em;
+}
