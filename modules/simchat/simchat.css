@@ -1,10 +1,10 @@
-.simChat {
-  background: pink;
-}
-
-.simChat {
+. .simChat {
   display: flex;
   flex-direction: column;
+}
+
+.sc-icon-glyph {
+  font-family: "numaicons";
 }
 
 .simChat > .sc-item {
@@ -123,6 +123,11 @@
   padding-bottom: 0.5em;
 }
 
+.sc-greeting .sc-icon-glyph {
+  font-size: 0.8em;
+  margin-right: 0.3em;
+}
+
 .sc-action {
   padding-top: 0.75em;
   text-align: right;
@@ -141,6 +146,11 @@
   text-align: right;
 }
 
+.sc-signature .sc-icon-glyph {
+  font-size: 0.8em;
+  margin-right: 0.3em;
+}
+
 .sc-item-content .sc-icon {
   padding-right: 0.25em;
 }
@@ -154,7 +164,8 @@
   padding-right: 1em;
 }
 
-.sc-layout-vm {
+.sc-layout-vm,
+.sc-layout-image {
   display: flex;
   flex-direction: column;
 }
@@ -196,4 +207,16 @@
   height: 100%;
   background: #fff;
   border-radius: 1em;
+}
+
+.sc-format-hangup > .sc-layout-icon > .sc-item-icon > .sc-icon-glyph {
+  color: #a03d25;
+}
+
+.sc-format-patched > .sc-layout-icon > .sc-item-icon > .sc-icon-glyph {
+  color: #2ba84a;
+}
+
+.sc-format-rescued > .sc-layout-icon > .sc-item-icon > .sc-icon-glyph {
+  color: #2176ff;
 }
