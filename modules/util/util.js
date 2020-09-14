@@ -1,13 +1,11 @@
-var Util = new function() {
-
-  this.Browser = new function() {
-
-    this.queryParamStringToObject = function(url) {
+var Util = new (function () {
+  this.Browser = new (function () {
+    this.queryParamStringToObject = function (url) {
       var result = {};
       var pair = [];
       var params = (url || window.location.href).split("?")[1];
 
-      if (params != undefined) {
+      if (params) {
         params = params.split("&");
 
         for (var i = 0; i < params.length; i++) {
@@ -19,53 +17,51 @@ var Util = new function() {
       }
 
       return result;
-    }
+    };
 
-    this.objectToQueryParamString = function(params) {
-      if (!params)
-        return "";
+    this.objectToQueryParamString = function (params) {
+      if (!params) return "";
       var keys = Object.keys(params);
-      var result = []
-      for (var i=0; i<keys.length; i++) {
+      var result = [];
+      for (var i = 0; i < keys.length; i++) {
         result.push(
-          encodeURIComponent(keys[i])
-          + "="
-          +  encodeURIComponent(params[keys[i]])
-        )
+          encodeURIComponent(keys[i]) +
+            "=" +
+            encodeURIComponent(params[keys[i]])
+        );
       }
       return "?" + result.join("&");
-    }
+    };
 
-    this.getCookieByName = function(cookieName) {
+    this.getCookieByName = function (cookieName) {
       var name = cookieName + "=";
       var decodedCookie = decodeURIComponent(document.cookie);
       var ca = decodedCookie.split(";");
       for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) == " ") {
+        while (c.charAt(0) === " ") {
           c = c.substring(1);
         }
-        if (c.indexOf(name) == 0)
-          return c.substring(name.length, c.length);
+        if (c.indexOf(name) === 0) return c.substring(name.length, c.length);
       }
       return;
-    }
-  }
+    };
+  })();
 
-  this.Objects = new function() {
-
-    this.hasKeys = function() {
-      for (var i=0; i<expectedKeys.length; i++) {
+  this.Objects = new (function () {
+    this.hasKeys = function (obj, expectedKeys, allowEmpty) {
+      for (var i = 0; i < expectedKeys.length; i++) {
         var key = expectedKeys[i];
         if (!obj.hasOwnProperty(key)) {
-            return false;
-          }
+          return false;
+        }
         if (!allowEmpty && (obj[key] === "" || obj[key] === undefined)) {
           return false;
         }
       }
       return true;
-    }
+    };
+  })();
+})();
 
-  }
-}
+window.Util = Util;

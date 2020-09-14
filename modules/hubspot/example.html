@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Hubspot Form Example</title>
+    <!-- Start of HubSpot Embed Code -->
+    <script
+      type="text/javascript"
+      id="hs-script-loader"
+      async
+      defer
+      src="//js.hs-scripts.com/3283010.js"
+    ></script>
+    <!--[if lte IE 8]>
+      <script
+        charset="utf-8"
+        type="text/javascript"
+        src="//js.hsforms.net/forms/v2-legacy.js"
+      ></script>
+    <![endif]-->
+    <script
+      charset="utf-8"
+      type="text/javascript"
+      src="//js.hsforms.net/forms/v2.js"
+    ></script>
+    <!-- End of HubSpot Embed Code -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <body>
+    <div id="test-form" />
+
+    <script>
+      var config = {
+        formId: "6bafcad7-748a-45d9-8dde-2d2fce4b4369",
+        name: "Test Form",
+        formType: "Testing",
+        target: "#test-form",
+        prequiredFields: ["email"],
+        prequiredFailPath: "redirect.html?fail=1",
+        redirectUrl: "redirect.html"
+      };
+
+      $(document).ready(function () {
+        $("#test-form").hubspotForm(config);
+      });
+    </script>
+  </body>
+
+  <script src="../analytics/analytics.js"></script>
+  <script src="../util/util.js"></script>
+  <script src="hubspotForms.js"></script>
+</html>
