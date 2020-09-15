@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Actions</title>
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.min.js"
+      integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .modal { 
+        display: none;
+      }
+      .modal.modal-closed {
+        display: none;
+      }
+      .modal.modal-opened {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: rgba(0,0,0,0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .modal > .modal-content {
+        background: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="foo" class="modal"">
+      this is a modal
+    </div>
+    <div id="foo2" class="modal"">
+        this is another modal
+        <p><a href="javascript:alert('foo2');">click me</a>
+      </div>
+    <div
+      data-action="start_signup"
+      data-method="modal"
+      data-modal-selector="#foo"
+    >
+      Signup
+    </div>
+    <div
+      data-action="start_signup"
+      data-method="modal"
+      data-modal-selector="#foo2"
+    >
+      Quit
+    </div>
+
+    <script>
+      $( document ).ready(function() {
+        $(".modal").modal();
+      });
+    </script>
+  </body>
+
+  <script src="../analytics/analytics.js"></script>
+  <script src="../modal/modal.js"></script>
+  <script src="actions.js"></script>
+</html>
