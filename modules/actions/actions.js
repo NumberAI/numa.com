@@ -1,7 +1,9 @@
 var jQuery = window.jQuery;
 
 (function ($) {
-  $("[data-action='start_signup']").click(function (event, options) {
+  $("[data-action='start_signup']").click(function (e, options) {
+    e.preventDefault();
+
     var base = this;
     var defaults = {
       signupUrl: "https://signup.numa.com",
