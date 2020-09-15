@@ -5,6 +5,7 @@ var hbspt = window.hbspt;
 (function ($) {
   var HUBSPOT = window.HUBSPOT || {
     portalId: "3283010",
+    forms: {},
     submissions: {}
   };
 
@@ -13,6 +14,8 @@ var hbspt = window.hbspt;
   $.fn.hubspotForm = function (options) {
     if (!options.formId || !options.name)
       throw new ReferenceError("Hubspot form not properly configured");
+
+    if (HUBSPOT.forms[options.formId]) return; // Form already exists
 
     var defaults = {
       portalId: HUBSPOT.portalId,
@@ -96,6 +99,7 @@ var hbspt = window.hbspt;
     };
 
     hbspt.forms.create(form);
+    HUBSPOT.forms[options.formId] = true;
   };
 
   // Private

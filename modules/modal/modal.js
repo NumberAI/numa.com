@@ -89,7 +89,9 @@ var jQuery = window.jQuery;
       });
 
       $(base).on("showModal", function () {
-        if (settings.onBeforeSnow) settings.onBeforeShow(this);
+        if (settings.onBeforeShow !== undefined) {
+          settings.onBeforeShow(this);
+        }
         open(this);
         if (settings.onShow) settings.onShow(this);
       });
