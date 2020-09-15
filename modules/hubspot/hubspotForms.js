@@ -24,7 +24,9 @@ var hbspt = window.hbspt;
       prequiredFailPath: undefined,
       redirectUrl: undefined,
       removeHubspotContext: true,
-      withQueryParams: true
+      withQueryParams: true,
+      afterLoad: undefined,
+      afterSubmitted: undefined
     };
     var settings = $.extend(defaults, options);
     var form = settings;
@@ -38,7 +40,9 @@ var hbspt = window.hbspt;
 
         success = Util.Objects.hasKeys(params, settings.prequiredFields);
         if (!success && settings.prequiredFailPath) {
-          var q = Util.Browser.objectToQueryParamString(params);
+          var q = Object.keys(params).length
+            ? Util.Browser.objectToQueryParamString(params)
+            : "";
           window.location.href = settings.prequiredFailPath + q;
           return;
         }
@@ -48,11 +52,13 @@ var hbspt = window.hbspt;
     };
 
     form.onFormReady = function ($form) {
-      $(targetSel).trigger("analytics.formload", settings);
+      $(targetSel).trigger("analytics.form_load", settings);
 
       $form._hsforms_transferCookies();
       $form._hsforms_transferQueryParams();
       $form._hsforms_transferFields(settings.fields);
+
+      if (options.afterLoad) $(document).trigger(options.afterLoad, settings);
 
       if (options.onFormReady) options.onFormReady($form);
     };
@@ -64,9 +70,12 @@ var hbspt = window.hbspt;
     };
 
     form.onFormSubmitted = function () {
-      $(targetSel).trigger("analytics.formsubmitted", settings);
+      $(targetSel).trigger("analytics.form_submitted", settings);
 
       if (options.onFormSubmitted) options.onFormSubmitted();
+
+      if (options.afterLoad)
+        $(document).trigger(options.afterSubmitted, settings);
 
       if (settings.redirectUrl) {
         var url = settings.redirectUrl;
