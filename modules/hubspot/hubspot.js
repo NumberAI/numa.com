@@ -9,7 +9,66 @@ var hbspt = window.hbspt;
     submissions: {}
   };
 
-  // Public
+  // CTA
+
+  $.fn.hubspotCTA = function (options) {
+    var base = this;
+    var defaults = {
+      id: $(this).data("cta-id") || undefined,
+      portalId: HUBSPOT.portalId,
+      altText: undefined
+    };
+
+    var settings = $.extend(defaults, options);
+
+    var imageEl = $("<img />")
+      .addClass("hs-cta-img")
+      .css("border-width", "0px")
+      .attr("id", "hs-cta-img-" + settings.id)
+      .attr(
+        "src",
+        "https://no-cache.hubspot.com/cta/default/" +
+          settings.portalId +
+          "/" +
+          settings.id +
+          ".png"
+      )
+      .attr("alt", settings.alt)
+      .hide();
+
+    var linkEl = $("<a />").attr(
+      "href",
+      "https://cta-redirect.hubspot.com/cta/redirect/" +
+        settings.portalId +
+        "/" +
+        settings.id
+    );
+    $(linkEl).wrapInner(imageEl);
+
+    var compatEl = $(
+      "<!--[if lte IE 8]><div id='hs-cta-ie-element'></div><![endif]-->"
+    );
+
+    var wrapperEl = $("<span/>")
+      .addClass("hs-cta-node")
+      .addClass("hs-cta-" + settings.id)
+      .attr("id", "hs-cta-" + settings.id);
+
+    $(wrapperEl).wrapInner([compatEl, linkEl]);
+
+    var rootEl = $("<span/>")
+      .addClass("hs-cta-wrapper")
+      .attr("id", "hs-cta-wrapper-" + settings.id);
+
+    $(rootEl).wrapInner(wrapperEl);
+    $(base).empty().append(rootEl);
+
+    hbspt.cta.load(settings.portalId, settings.id, {});
+  };
+
+  $("[data-cta-id]").hubspotCTA();
+
+  // Forms
 
   $.fn.hubspotForm = function (options) {
     if (!options.formId || !options.name)
