@@ -61,10 +61,6 @@ window.Analytics = Analytics;
       });
     });
 
-    $(".cta").on("click", function () {
-      $(this).trigger("analytics.clicked_cta", $(this).data());
-    });
-
     $("*").on("analytics.clicked_cta", function (event, options) {
       Analytics.track({
         object: "CTA",

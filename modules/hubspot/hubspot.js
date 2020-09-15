@@ -16,10 +16,14 @@ var hbspt = window.hbspt;
     var defaults = {
       id: $(this).data("cta-id") || undefined,
       portalId: HUBSPOT.portalId,
-      altText: undefined
+      altText: undefined,
+      name: $(this).data("cta-name")
     };
 
     var settings = $.extend(defaults, options);
+    if (!settings.id) return;
+
+    if (!settings.name) settings.name = settings.id;
 
     var imageEl = $("<img />")
       .addClass("hs-cta-img")
@@ -61,6 +65,10 @@ var hbspt = window.hbspt;
       .attr("id", "hs-cta-wrapper-" + settings.id);
 
     $(rootEl).wrapInner(wrapperEl);
+
+    $(base).on("click", function () {
+      $(this).trigger("analytics.clicked_cta", settings);
+    });
     $(base).empty().append(rootEl);
 
     hbspt.cta.load(settings.portalId, settings.id, {});
