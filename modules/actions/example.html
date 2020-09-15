@@ -35,27 +35,14 @@
     </style>
   </head>
   <body>
-    <div id="foo" class="modal"">
+    <div id="signup_modal" class="modal"">
       this is a modal
     </div>
-    <div id="foo2" class="modal"">
-        this is another modal
-        <p><a href="javascript:alert('foo2');">click me</a>
-      </div>
-    <div
-      data-action="start_signup"
-      data-method="modal"
-      data-modal-selector="#foo"
-    >
+    
+    <div data-action="start_signup">
       Signup
     </div>
-    <div
-      data-action="start_signup"
-      data-method="modal"
-      data-modal-selector="#foo2"
-    >
-      Quit
-    </div>
+    
 
     <script>
       $( document ).ready(function() {

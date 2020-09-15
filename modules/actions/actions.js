@@ -6,19 +6,34 @@ var jQuery = window.jQuery;
     var defaults = {
       signupUrl: "https://signup.numa.com",
       methodAttr: "method",
-      modalSelectorAttr: "modal-selector"
+      modalAttr: "modal-selector",
+      signupModal: "#signup_modal"
     };
     var settings = $.extend(defaults, options);
 
+    // Analytics
     $(document).trigger("analytics.started_signup");
 
-    switch (($(base).data(settings.methodAttr) || "").toLowerCase()) {
-      case "modal":
-        $($(base).data(settings.modalSelectorAttr)).trigger("toggleModal");
-        break;
-      default:
-        window.location.href = settings.signupUrl;
-        break;
+    // Determine signup method
+
+    var METHODS = {
+      MODAL: "modal",
+      PAGE: "page"
+    };
+    var method = (
+      $(base).data(settings.methodAttr) || METHODS.MODAL
+    ).toLowerCase();
+
+    var modalEl;
+    if (method === METHODS.MODAL) {
+      var modal = $(base).data(settings.modalAttr) || settings.signupModal;
+      modalEl = $(modal);
+    }
+
+    if (METHODS.MODAL && modalEl.length) {
+      $(modalEl).trigger("toggleModal");
+    } else {
+      window.location.href = settings.signupUrl;
     }
   });
 })(jQuery);
