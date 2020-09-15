@@ -1,8 +1,9 @@
 var Util = new (function () {
   this.Webflow = new (function () {
     this.$parseJsonCMSField = function ($, field) {
-      if (!field || field.length) return undefined;
-      return $("<textarea/>").html(field).text();
+      console.log("here", field);
+      if (!field || !field.length) return undefined;
+      return JSON.parse($("<textarea/>").html(field).text());
     };
   })();
 
