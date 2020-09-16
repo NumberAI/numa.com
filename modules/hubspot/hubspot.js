@@ -9,69 +9,102 @@ var hbspt = window.hbspt;
     submissions: {}
   };
 
+  $.getScript("https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js")
+    .done(function (script, textStatus) {})
+    .fail(function (jqxhr, settings, exception) {
+      throw new Error("Failed to load Hubspot script");
+    });
+
   // CTA
 
   $.fn.hubspotCTA = function (options) {
     var base = this;
-    var defaults = {
-      id: $(this).data("cta-id") || undefined,
-      portalId: HUBSPOT.portalId,
-      altText: undefined,
-      name: $(this).data("cta-name")
-    };
 
-    var settings = $.extend(defaults, options);
-    if (!settings.id) return;
+    $.getScript("https://js.hscta.net/cta/current.js")
+      .done(function (script, textStatus) {
+        if (textStatus === "success") {
+          var settings = init();
+          if (!settings) return;
 
-    if (!settings.name) settings.name = settings.id;
+          var el = createElement(settings);
+          if (!el) return;
 
-    var imageEl = $("<img />")
-      .addClass("hs-cta-img")
-      .css("border-width", "0px")
-      .attr("id", "hs-cta-img-" + settings.id)
-      .attr(
-        "src",
-        "https://no-cache.hubspot.com/cta/default/" +
+          eventHandlers(settings);
+
+          $(base).empty().append(el);
+          hbspt.cta.load(settings.portalId, settings.id, {});
+        } else {
+          throw new Error("Failed to load Hubspot CTA script");
+        }
+      })
+      .fail(function (jqxhr, settings, exception) {
+        throw new Error("Failed to load Hubspot CTA script");
+      });
+
+    function init() {
+      var defaults = {
+        id: $(base).data("cta-id") || undefined,
+        portalId: HUBSPOT.portalId,
+        altText: undefined,
+        name: $(base).data("cta-name")
+      };
+
+      var settings = $.extend(defaults, options);
+      if (!settings.id) return;
+      if (!settings.name) settings.name = settings.id;
+
+      return settings;
+    }
+
+    function createElement(settings) {
+      var imageEl = $("<img />")
+        .addClass("hs-cta-img")
+        .css("border-width", "0px")
+        .attr("id", "hs-cta-img-" + settings.id)
+        .attr(
+          "src",
+          "https://no-cache.hubspot.com/cta/default/" +
+            settings.portalId +
+            "/" +
+            settings.id +
+            ".png"
+        )
+        .attr("alt", settings.alt)
+        .hide();
+
+      var linkEl = $("<a />").attr(
+        "href",
+        "https://cta-redirect.hubspot.com/cta/redirect/" +
           settings.portalId +
           "/" +
-          settings.id +
-          ".png"
-      )
-      .attr("alt", settings.alt)
-      .hide();
+          settings.id
+      );
+      $(linkEl).wrapInner(imageEl);
 
-    var linkEl = $("<a />").attr(
-      "href",
-      "https://cta-redirect.hubspot.com/cta/redirect/" +
-        settings.portalId +
-        "/" +
-        settings.id
-    );
-    $(linkEl).wrapInner(imageEl);
+      var compatEl = $(
+        "<!--[if lte IE 8]><div id='hs-cta-ie-element'></div><![endif]-->"
+      );
 
-    var compatEl = $(
-      "<!--[if lte IE 8]><div id='hs-cta-ie-element'></div><![endif]-->"
-    );
+      var wrapperEl = $("<span/>")
+        .addClass("hs-cta-node")
+        .addClass("hs-cta-" + settings.id)
+        .attr("id", "hs-cta-" + settings.id);
 
-    var wrapperEl = $("<span/>")
-      .addClass("hs-cta-node")
-      .addClass("hs-cta-" + settings.id)
-      .attr("id", "hs-cta-" + settings.id);
+      $(wrapperEl).wrapInner([compatEl, linkEl]);
 
-    $(wrapperEl).wrapInner([compatEl, linkEl]);
+      var rootEl = $("<span/>")
+        .addClass("hs-cta-wrapper")
+        .attr("id", "hs-cta-wrapper-" + settings.id);
 
-    var rootEl = $("<span/>")
-      .addClass("hs-cta-wrapper")
-      .attr("id", "hs-cta-wrapper-" + settings.id);
+      $(rootEl).wrapInner(wrapperEl);
+      return rootEl;
+    }
 
-    $(rootEl).wrapInner(wrapperEl);
-
-    $(base).on("click", function () {
-      $(this).trigger("analytics.clicked_cta", settings);
-    });
-    $(base).empty().append(rootEl);
-
-    hbspt.cta.load(settings.portalId, settings.id, {});
+    function eventHandlers(settings) {
+      $(base).on("click", function () {
+        $(this).trigger("analytics.clicked_cta", settings);
+      });
+    }
   };
 
   $("[data-cta-id]").hubspotCTA();
@@ -84,89 +117,117 @@ var hbspt = window.hbspt;
 
     if (HUBSPOT.forms[options.formId]) return; // Form already exists
 
-    var defaults = {
-      portalId: HUBSPOT.portalId,
-      name: undefined,
-      formId: undefined,
-      formType: undefined,
-      target: undefined,
-      prequiredFields: [],
-      prequiredFailPath: undefined,
-      redirectUrl: undefined,
-      removeHubspotContext: true,
-      withQueryParams: true,
-      afterLoad: undefined,
-      afterSubmitted: undefined
-    };
-    var settings = $.extend(defaults, options);
-    var form = settings;
-    $(settings.target).addClass("hs-form-embed");
-    var targetSel = settings.target + ".hs-form-embed";
+    $.getScript("https://js.hsforms.net/forms/v2.js")
+      .done(function (script, textStatus) {
+        if (textStatus === "success") {
+          var settings = init();
+          if (!settings) return;
 
-    form.onBeforeFormInit = function (ctx) {
-      if (settings.prequiredFields.length) {
-        var success = true;
-        var params = Util.Browser.queryParamStringToObject();
+          var selector = createElement(settings);
+          var form = setupForm(settings, selector);
 
-        success = Util.Objects.hasKeys(params, settings.prequiredFields);
-        if (!success && settings.prequiredFailPath) {
-          var q = Object.keys(params).length
-            ? Util.Browser.objectToQueryParamString(params)
-            : "";
-          window.location.href = settings.prequiredFailPath + q;
-          return;
+          hbspt.forms.create(form);
+          HUBSPOT.forms[options.formId] = true;
+        } else {
+          throw new Error("Failed to load Hubspot Forms script");
         }
-      }
+      })
+      .fail(function (jqxhr, settings, exception) {
+        throw new Error("Failed to load Hubspot Forms script");
+      });
 
-      if (options.onBeforeFormInit) options.onBeforeFormInit(ctx);
-    };
+    function init() {
+      var defaults = {
+        portalId: HUBSPOT.portalId,
+        name: undefined,
+        formId: undefined,
+        formType: undefined,
+        target: undefined,
+        prequiredFields: [],
+        prequiredFailPath: undefined,
+        redirectUrl: undefined,
+        removeHubspotContext: true,
+        withQueryParams: true,
+        afterLoad: undefined,
+        afterSubmitted: undefined
+      };
+      var settings = $.extend(defaults, options);
+      return settings;
+    }
 
-    form.onFormReady = function ($form) {
-      $(targetSel).trigger("analytics.form_load", settings);
+    function createElement(settings) {
+      $(settings.target).addClass("hs-form-embed");
+      var selector = settings.target + ".hs-form-embed";
+      return selector;
+    }
 
-      $form._hsforms_transferCookies();
-      $form._hsforms_transferQueryParams();
-      $form._hsforms_transferFields(settings.fields);
+    function setupForm(settings, selector) {
+      var form = settings;
 
-      if (options.afterLoad) $(document).trigger(options.afterLoad, settings);
+      form.onBeforeFormInit = function (ctx) {
+        if (settings.prequiredFields.length) {
+          var success = true;
+          var params = Util.Browser.queryParamStringToObject();
 
-      if (options.onFormReady) options.onFormReady($form);
-    };
-
-    form.onFormSubmit = function ($form) {
-      _hsforms_setSubmittedValues(settings.formId, $form);
-
-      if (options.onFormSubmit) options.onFormSubmit($form);
-    };
-
-    form.onFormSubmitted = function () {
-      $(targetSel).trigger("analytics.form_submitted", settings);
-
-      if (options.onFormSubmitted) options.onFormSubmitted();
-
-      if (options.afterLoad)
-        $(document).trigger(options.afterSubmitted, settings);
-
-      if (settings.redirectUrl) {
-        var url = settings.redirectUrl;
-
-        if (settings.withQueryParams) {
-          var queryParams = Util.Browser.queryParamStringToObject();
-          var formValues = _hsforms_getSubmittedValues(settings.formId);
-          var params = $.extend(queryParams, formValues);
-          if (settings.removeHubspotContext)
-            params = removeHubspotContextFields({
-              fields: params,
-              dropEmpty: true
-            });
-          url = url + "?" + Util.Browser.objectToQueryParamString(params);
+          success = Util.Objects.hasKeys(params, settings.prequiredFields);
+          if (!success && settings.prequiredFailPath) {
+            var q = Object.keys(params).length
+              ? Util.Browser.objectToQueryParamString(params)
+              : "";
+            window.location.href = settings.prequiredFailPath + q;
+            return;
+          }
         }
-        window.location.href = url;
-      }
-    };
 
-    hbspt.forms.create(form);
-    HUBSPOT.forms[options.formId] = true;
+        if (options.onBeforeFormInit) options.onBeforeFormInit(ctx);
+      };
+
+      form.onFormReady = function ($form) {
+        $(selector).trigger("analytics.form_load", settings);
+
+        $form._hsforms_transferCookies();
+        $form._hsforms_transferQueryParams();
+        $form._hsforms_transferFields(settings.fields);
+
+        if (options.afterLoad) $(document).trigger(options.afterLoad, settings);
+
+        if (options.onFormReady) options.onFormReady($form);
+      };
+
+      form.onFormSubmit = function ($form) {
+        _hsforms_setSubmittedValues(settings.formId, $form);
+
+        if (options.onFormSubmit) options.onFormSubmit($form);
+      };
+
+      form.onFormSubmitted = function () {
+        $(selector).trigger("analytics.form_submitted", settings);
+
+        if (options.onFormSubmitted) options.onFormSubmitted();
+
+        if (options.afterLoad)
+          $(document).trigger(options.afterSubmitted, settings);
+
+        if (settings.redirectUrl) {
+          var url = settings.redirectUrl;
+
+          if (settings.withQueryParams) {
+            var queryParams = Util.Browser.queryParamStringToObject();
+            var formValues = _hsforms_getSubmittedValues(settings.formId);
+            var params = $.extend(queryParams, formValues);
+            if (settings.removeHubspotContext)
+              params = removeHubspotContextFields({
+                fields: params,
+                dropEmpty: true
+              });
+            url = url + "?" + Util.Browser.objectToQueryParamString(params);
+          }
+          window.location.href = url;
+        }
+      };
+
+      return form;
+    }
   };
 
   // Private
