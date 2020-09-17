@@ -3,6 +3,33 @@ var jQuery = window.jQuery;
 (function ($) {
   // Public
 
+  $.fn.chatLayout = function (options) {
+    var base = this;
+
+    var settings = init(options);
+
+    // if (settings.fillSpace) $(base).css("position", "relative");
+    var contentEl = $("<div />").addClass("cl-content-wrapper");
+    var chatEl = $("<div />").addClass("cl-chat-wrapper");
+
+    if (settings.layout) {
+      var layout = settings.layout.toLowerCase().replace(" ", "-");
+      contentEl.addClass("chat-layout-" + layout);
+    }
+
+    $(base).addClass("chat-layout");
+    $(base).wrapInner(contentEl);
+    $(chatEl).simChat(settings);
+    $(base).append(chatEl);
+
+    function init(options) {
+      var defaults = {
+        chatLayout: "inset"
+      };
+      return $.extend({}, defaults, options);
+    }
+  };
+
   var TRANSITIONS = {
     NONE: undefined,
     FADE: "fade"
@@ -17,7 +44,7 @@ var jQuery = window.jQuery;
 
     var settings = init(options);
     var chatEl = renderMessages(messages, settings);
-    $(base).wrapInner(chatEl);
+    $(base).prepend(chatEl);
 
     eventHandlers(settings);
     setupAnimation(messages, settings);
