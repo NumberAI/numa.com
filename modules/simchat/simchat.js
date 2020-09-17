@@ -2,62 +2,111 @@ var jQuery = window.jQuery;
 
 (function ($) {
   // Public
+
+  var TRANSITIONS = {
+    NONE: undefined,
+    FADE: "fade"
+  };
+
   $.fn.simChat = function (options) {
     var base = this;
 
-    var defaults = {
-      isAnimated: true,
-      animationLoop: true,
-      animationStepDelay: 1000,
-      animationLoopDelay: 10000
-    };
-    base.settings = $.extend({}, defaults, options);
+    // Main
 
-    var parentEl = $("<div />").addClass("simChat");
-    for (var i = 0; i < options.messages.length; i++) {
-      var childEl = $()._sc_chatItem(options.messages[i]);
-      if (options.animated) {
-        childEl.hide();
-      }
-      parentEl.append(childEl);
+    var messages = options.messages;
+
+    var settings = init(options);
+    var chatEl = renderMessages(messages, settings);
+    $(base).wrapInner(chatEl);
+
+    eventHandlers(settings);
+    setupAnimation(messages, settings);
+    render(settings);
+
+    // Private
+
+    function init(options) {
+      var defaults = {
+        fillSpace: false,
+        isAnimated: true,
+        transition: TRANSITIONS.FADE,
+        delay: 1500,
+        loop: false,
+        loopDelay: 10000
+      };
+      return $.extend({}, defaults, options);
     }
-    $(base).append(parentEl);
+
+    function renderMessages(messages, options) {
+      function createParentEl(options) {
+        var el = $("<div />").addClass("simChat");
+        if (options.fillSpace) el.addClass("space-between");
+        return el;
+      }
+
+      var parentEl = createParentEl(options);
+      for (var i = 0; i < messages.length; i++) {
+        var childEl = $()._sc_chatItem(messages[i]);
+        childEl.hide();
+        parentEl.append(childEl);
+      }
+      return parentEl;
+    }
 
     // Animation
 
-    base._animationStep = 1;
-    base._timeline = [];
+    function setupAnimation(messages, options) {
+      if (!settings.isAnimated) return;
+      base._animationStep = 1;
+      base._timeline = [];
 
-    for (i = 0; i < options.messages.length; i++) {
-      base._timeline.push(
-        options.messages[i].delay || base.settings.animationStepDelay
-      );
+      function buildTimeline(messages, options) {
+        base._timeline = [];
+        for (var i = 0; i < messages.length; i++) {
+          base._timeline.push(
+            messages[i].delay === undefined ? options.delay : messages[i].delay
+          );
+        }
+      }
+      buildTimeline(messages, options);
     }
 
-    function play(options) {
-      playStep(base._animationStep, options);
+    function transition(el, isHiding, transitionType) {
+      switch (transitionType) {
+        case TRANSITIONS.FADE:
+          isHiding ? el.fadeOut() : el.fadeIn();
+          break;
+        default:
+          isHiding ? el.hide() : el.show();
+          break;
+      }
     }
 
-    function playStep(step, options) {
-      base._animationStep = step;
+    function playAnimationStep(step, options) {
       var el = $(base)
         .children(".simChat")
         .children(".sc-item:nth-child(" + step + ")");
 
-      if (options && options.immediate) el.show();
-      else el.fadeIn();
-
-      var nextStep = step < base._timeline.length ? step + 1 : 0;
-      if (base.settings.animationLoop && nextStep < step) {
-        base._animationTimer = setTimeout(function () {
-          rewind(options);
-          play();
-        }, base.settings.animationLoopDelay);
+      transition(el, false, options.transition);
+      base._animationStep = step;
+      var isEnd = step >= base._timeline.length;
+      if (isEnd) {
+        if (options.loop) {
+          window.clearTimeout(base._animationTimer);
+          base._animationTimer = setTimeout(function () {
+            rewind(options);
+            play(options);
+          }, options.loopDelay);
+        }
       } else {
         base._animationTimer = setTimeout(function () {
-          playStep(nextStep);
-        }, base._timeline[nextStep]);
+          playAnimationStep(step + 1, options);
+        }, base._timeline[step + 1]);
       }
+    }
+
+    function play(options) {
+      playAnimationStep(base._animationStep, options);
     }
 
     function pause() {
@@ -65,47 +114,43 @@ var jQuery = window.jQuery;
     }
 
     function rewind(options) {
-      var $el = $(base).children(".simChat").children(".sc-item");
-      if (options && options.immediate) {
-        $el.hide();
-      } else {
-        $el.fadeOut();
-      }
+      var el = $(base).children(".simChat").children(".sc-item");
+      transition(el, true, options.transition);
       base._animationStep = 0;
     }
 
     function forward(options) {
-      var $el = $(base).children(".simChat").children(".sc-item");
-      if (options && options.immediate) {
-        $el.show();
-      } else {
-        $el.fadeIn();
-      }
-      base._animationStep = options.messages.length;
+      var el = $(base).children(".simChat").children(".sc-item");
+      transition(el, false, options.transition);
+      base._animationStep = messages.length;
     }
 
     // Render
 
-    if (base.settings.isAnimated) play(1);
-    else forward();
+    function render(options) {
+      if (options.isAnimated) play(options);
+      else forward(options);
+    }
 
     // Events
 
-    $(base).on("play", function (event, options) {
-      play(options);
-    });
+    function eventHandlers(optons) {
+      $(base).on("play", function (event, options) {
+        play(options);
+      });
 
-    $(base).on("pause", function (event, options) {
-      pause(options);
-    });
+      $(base).on("pause", function (event, options) {
+        pause(options);
+      });
 
-    $(base).on("rewind", function (event, options) {
-      rewind(options);
-    });
+      $(base).on("rewind", function (event, options) {
+        rewind(options);
+      });
 
-    $(base).on("forward", function (event, options) {
-      forward(options);
-    });
+      $(base).on("forward", function (event, options) {
+        forward(options);
+      });
+    }
   };
 
   // Private

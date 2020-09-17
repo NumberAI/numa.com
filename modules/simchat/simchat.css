@@ -3,6 +3,11 @@
   flex-direction: column;
 }
 
+.simChat.space-between {
+  height: 100%;
+  justify-content: space-between;
+}
+
 .sc-icon-glyph {
   font-family: "numaicons";
 }
