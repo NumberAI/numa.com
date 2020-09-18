@@ -5,8 +5,13 @@ var jQuery = window.jQuery;
 
   $.fn.chatLayout = function (options) {
     var base = this;
-
     var settings = init(options);
+
+    if (!base.length && settings.scriptId && settings.hostSelector) {
+      base = $("#" + settings.scriptId).closest(settings.hostSelector);
+    }
+
+    if (!base.length) throw new Error("Bad setup for host selector for chat");
 
     // if (settings.fillSpace) $(base).css("position", "relative");
     var contentEl = $("<div />").addClass("cl-content-wrapper");
@@ -24,6 +29,7 @@ var jQuery = window.jQuery;
 
     function init(options) {
       var defaults = {
+        hostSelector: ".chat-layout-host",
         chatLayout: "inset"
       };
       return $.extend({}, defaults, options);

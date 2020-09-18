@@ -30,36 +30,44 @@
       #hero-chat .cl-content-wrapper img {
         max-height: 400px;
       }
+
+      .embed {
+        display: none;
+      }
     </style>
     <link rel="stylesheet" href="simchat.css" />
   </head>
   <body>
-    <div id="hero-chat">
+    <div class="chat-host" id="hero-chat">
       <img
         width="100%"
         src="https://assets-global.website-files.com/5d30f496e9af514470fdd7c5/5e73f8c36ea9c735bffd4700_DSC04944-14.jpg"
       />
+      <div class="embed">
+        <script id="embed-test">
+          $().ready(function () {
+            $().chatLayout({
+              scriptId: "embed-test",
+              hostSelector: ".chat-host",
+              isAnimated: true,
+              layout: "inset",
+              delay: 1000,
+              fillSpace: true,
+              messages: [
+                {
+                  content: "this is a text message",
+                  greeting: { name: "numa" }
+                },
+                {
+                  direction: "inbound",
+                  content: "this is an inbound text message"
+                }
+              ]
+            });
+          });
+        </script>
+      </div>
     </div>
-    <script>
-      $().ready(function () {
-        $("#hero-chat").chatLayout({
-          isAnimated: true,
-          layout: "top left",
-          delay: 1000,
-          //fillSpace: true,
-          messages: [
-            {
-              content: "this is a text message",
-              greeting: { name: "numa" }
-            },
-            {
-              direction: "inbound",
-              content: "this is an inbound text message"
-            }
-          ]
-        });
-      });
-    </script>
     <script src="simchat.js"></script>
   </body>
 </html>
