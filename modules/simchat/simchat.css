@@ -95,6 +95,10 @@
   flex: 1;
 }
 
+.sc-item-layout.sc-layout-base {
+  max-width: 70%;
+}
+
 .sc-format-message > *,
 .sc-format-image .sc-item-content {
   padding: 1em;

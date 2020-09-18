@@ -49,10 +49,9 @@
             $().chatLayout({
               scriptId: "embed-test",
               hostSelector: ".chat-host",
-              layout: "inset",
+              layout: "bottom",
               isAnimated: true,
               delay: 1000,
-              fillSpace: true,
               messages: [
                 {
                   content: "this is a text message",
@@ -60,7 +59,12 @@
                 },
                 {
                   direction: "inbound",
-                  content: "this is an inbound text message"
+                  content:
+                    "this is an inbound text message this is an inbound text message this is an inbound text message this is an inbound text message this is an inbound text message "
+                },
+                {
+                  format: "order",
+                  content: "foo"
                 }
               ]
             });
