@@ -5,34 +5,38 @@
 
 .chat-layout .cl-content-wrapper {
   display: inline-block;
-  max-width: 100%;
+  width: 100%;
 }
 
-.chat-layout .cl-content-wrapper.chat-layout-inset {
+.chat-layout .cl-content-inner.chat-layout-inset {
   margin: 2.5em;
 }
 
-.chat-layout .cl-content-wrapper.chat-layout-left,
-.chat-layout .cl-content-wrapper.chat-layout-top-left,
-.chat-layout .cl-content-wrapper.chat-layout-bottom-left {
+.chat-layout .cl-content-inner.chat-layout-none {
+  margin: 0em;
+}
+
+.chat-layout .cl-content-inner.chat-layout-left,
+.chat-layout .cl-content-inner.chat-layout-top-left,
+.chat-layout .cl-content-inner.chat-layout-bottom-left {
   margin-left: 2.5em;
 }
 
-.chat-layout .cl-content-wrapper.chat-layout-right,
-.chat-layout .cl-content-wrapper.chat-layout-top-right,
-.chat-layout .cl-content-wrapper.chat-layout-bottom-right {
+.chat-layout .cl-content-inner.chat-layout-right,
+.chat-layout .cl-content-inner.chat-layout-top-right,
+.chat-layout .cl-content-inner.chat-layout-bottom-right {
   margin-right: 2.5em;
 }
 
-.chat-layout .cl-content-wrapper.chat-layout-top,
-.chat-layout .cl-content-wrapper.chat-layout-top-right,
-.chat-layout .cl-content-wrapper.chat-layout-top-left {
+.chat-layout .cl-content-inner.chat-layout-top,
+.chat-layout .cl-content-inner.chat-layout-top-right,
+.chat-layout .cl-content-inner.chat-layout-top-left {
   margin-top: 2.5em;
 }
 
-.chat-layout .cl-content-wrapper.chat-layout-bottom,
-.chat-layout .cl-content-wrapper.chat-layout-bottom-right,
-.chat-layout .cl-content-wrapper.chat-layout-bottom-left {
+.chat-layout .cl-content-inner.chat-layout-bottom,
+.chat-layout .cl-content-inner.chat-layout-bottom-right,
+.chat-layout .cl-content-inner.chat-layout-bottom-left {
   margin-bottom: 2.5em;
 }
 

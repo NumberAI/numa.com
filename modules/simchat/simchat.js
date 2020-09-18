@@ -15,22 +15,23 @@ var jQuery = window.jQuery;
 
     // if (settings.fillSpace) $(base).css("position", "relative");
     var contentEl = $("<div />").addClass("cl-content-wrapper");
+    var contentInnerEl = $("<div />").addClass("cl-content-inner");
     var chatEl = $("<div />").addClass("cl-chat-wrapper");
 
     if (settings.layout) {
       var layout = settings.layout.toLowerCase().replace(" ", "-");
-      contentEl.addClass("chat-layout-" + layout);
+      contentInnerEl.addClass("chat-layout-" + layout);
     }
 
     $(base).addClass("chat-layout");
-    $(base).wrapInner(contentEl);
+    $(base).wrapInner(contentEl.wrapInner(contentInnerEl));
     $(chatEl).simChat(settings);
     $(base).append(chatEl);
 
     function init(options) {
       var defaults = {
         hostSelector: ".chat-layout-host",
-        chatLayout: "inset"
+        layout: "inset"
       };
       return $.extend({}, defaults, options);
     }
