@@ -76,12 +76,20 @@
 
 .sc-dir-outbound {
   justify-content: flex-end;
-  max-width: 70%;
 }
 
 .sc-dir-inbound {
   justify-content: flex-start;
+}
+
+.sc-dir-outbound > .sc-item-layout,
+.sc-dir-inbound > .sc-item-layout {
   max-width: 70%;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-all;
+  word-break: break-word;
+  hyphens: auto;
 }
 
 .sc-dir-inline {
