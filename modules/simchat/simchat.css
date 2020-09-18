@@ -76,10 +76,12 @@
 
 .sc-dir-outbound {
   justify-content: flex-end;
+  max-width: 70%;
 }
 
 .sc-dir-inbound {
   justify-content: flex-start;
+  max-width: 70%;
 }
 
 .sc-dir-inline {
@@ -93,10 +95,6 @@
 
 .sc-dir-fullwidth > * {
   flex: 1;
-}
-
-.sc-item-layout.sc-layout-base {
-  max-width: 70%;
 }
 
 .sc-format-message > *,
