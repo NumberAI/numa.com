@@ -34,22 +34,28 @@
       .embed {
         display: none;
       }
+
+      .chat-content {
+        background: green;
+      }
     </style>
     <link rel="stylesheet" href="simchat.css" />
   </head>
   <body>
-    <div class="chat-host" id="hero-chat">
-      <img
-        width="100%"
-        src="https://assets-global.website-files.com/5d30f496e9af514470fdd7c5/5e73f8c36ea9c735bffd4700_DSC04944-14.jpg"
-      />
-      <div class="embed">
+    <div class="conversation-host">
+      <div class="conversation-wrapper"></div>
+      <div class="content-wrapper">
+        <img
+          width="100%"
+          src="https://assets-global.website-files.com/5d30f496e9af514470fdd7c5/5e73f8c36ea9c735bffd4700_DSC04944-14.jpg"
+        />
         <script id="embed-test">
           $().ready(function () {
             $().chatLayout({
               scriptId: "embed-test",
-              hostSelector: ".chat-host",
-              layout: "bottom",
+              hostSelector: ".conversation-host",
+              chatClasses: ["conversation-chat-right"],
+              contentClasses: ["conversation-content-right"],
               isAnimated: true,
               delay: 1000,
               messages: [

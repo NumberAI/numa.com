@@ -13,25 +13,34 @@ var jQuery = window.jQuery;
 
     if (!base.length) throw new Error("Bad setup for host selector for chat");
 
-    // if (settings.fillSpace) $(base).css("position", "relative");
-    var contentEl = $("<div />").addClass("cl-content-wrapper");
-    var contentInnerEl = $("<div />").addClass("cl-content-inner");
-    var chatEl = $("<div />").addClass("cl-chat-wrapper");
-
-    if (settings.layout) {
-      var layout = settings.layout.toLowerCase().replace(" ", "-");
-      contentInnerEl.addClass("chat-layout-" + layout);
-    }
-
     $(base).addClass("chat-layout");
-    $(base).wrapInner(contentEl.wrapInner(contentInnerEl));
-    $(chatEl).simChat(settings);
-    $(base).append(chatEl);
+
+    var chatWrapperEl = $(base).children(settings.chatSelector);
+    if (!chatWrapperEl.length) {
+      chatWrapperEl = $("<div />").addClass(settings.chatSelector);
+      chatWrapperEl = $(base).prepend(chatWrapperEl);
+    }
+    chatWrapperEl.addClass("cl-conversation-wrapper");
+    if (settings.chatClasses) chatWrapperEl.addClass(settings.chatClasses);
+    chatWrapperEl.simChat(settings);
+
+    var contentWrapperEl = $(base).children(settings.contentSelector);
+    if (!contentWrapperEl.length) {
+      contentWrapperEl = $("<div />").addClass(settings.contentSelector);
+      contentWrapperEl = $(base).append(contentWrapperEl);
+    }
+    contentWrapperEl.addClass("cl-content-wrapper");
+    if (settings.contentClasses)
+      contentWrapperEl.addClass(settings.contentClasses);
+    var contentInnerEl = $("<div />").addClass("cl-content-inner");
+    contentWrapperEl.wrapInner(contentInnerEl);
 
     function init(options) {
       var defaults = {
         hostSelector: ".chat-layout-host",
-        layout: "inset"
+        layout: "inset",
+        chatSelector: ".conversation-wrapper",
+        contentSelector: ".content-wrapper"
       };
       return $.extend({}, defaults, options);
     }

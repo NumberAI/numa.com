@@ -8,36 +8,8 @@
   width: 100%;
 }
 
-.chat-layout .cl-content-inner.chat-layout-inset {
-  margin: 2.5em;
-}
-
-.chat-layout .cl-content-inner.chat-layout-none {
-  margin: 0em;
-}
-
-.chat-layout .cl-content-inner.chat-layout-left,
-.chat-layout .cl-content-inner.chat-layout-top-left,
-.chat-layout .cl-content-inner.chat-layout-bottom-left {
-  margin-left: 2.5em;
-}
-
-.chat-layout .cl-content-inner.chat-layout-right,
-.chat-layout .cl-content-inner.chat-layout-top-right,
-.chat-layout .cl-content-inner.chat-layout-bottom-right {
-  margin-right: 2.5em;
-}
-
-.chat-layout .cl-content-inner.chat-layout-top,
-.chat-layout .cl-content-inner.chat-layout-top-right,
-.chat-layout .cl-content-inner.chat-layout-top-left {
-  margin-top: 2.5em;
-}
-
-.chat-layout .cl-content-inner.chat-layout-bottom,
-.chat-layout .cl-content-inner.chat-layout-bottom-right,
-.chat-layout .cl-content-inner.chat-layout-bottom-left {
-  margin-bottom: 2.5em;
+.chat-layout .cl-conversation-wrapper {
+  position: absolute;
 }
 
 .chat-layout .cl-chat-wrapper {
@@ -84,7 +56,7 @@
 
 .sc-dir-outbound > .sc-item-layout,
 .sc-dir-inbound > .sc-item-layout {
-  max-width: 70%;
+  max-width: 80%;
   overflow-wrap: break-word;
   word-wrap: break-word;
   word-break: break-all;
