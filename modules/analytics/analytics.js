@@ -85,4 +85,40 @@ window.Analytics = Analytics;
       });
     });
   });
+
+  $(".leadin-button").on("click", function (event) {
+    Analytics.track({
+      object: "Lead Popup",
+      action: "Submitted"
+    });
+  });
 })(jQuery);
+
+// Hubspot Events
+
+window.addEventListener("message", function (event) {
+  var type = event && event.data && event.data.type;
+  switch (type) {
+    case "hsFormCallback":
+      Analytics.track({
+        object: "Hubspot Form",
+        action: event.data.eventName,
+        label: event.data.id
+      });
+      break;
+    case "request-widget":
+      Analytics.track({
+        object: "Hubspot Chat",
+        action: "Setup"
+      });
+      break;
+    case "open-change":
+      Analytics.track({
+        object: "Hubspot Chat",
+        action: event.data.data ? "Opened" : "Closed"
+      });
+      break;
+    default:
+      return;
+  }
+});
