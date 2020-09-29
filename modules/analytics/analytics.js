@@ -5,6 +5,7 @@ var Analytics = new (function () {
     if (!options.object || !options.action) return;
 
     var event = options.properties || {};
+    event.event = "analytics";
     event.category = options.object;
     event.action = options.action;
     if (options.label) event.label = options.label;
