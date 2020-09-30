@@ -2,13 +2,13 @@ var jQuery = window.jQuery;
 var Util = window.Util;
 var hbspt = window.hbspt;
 
-(function ($) {
-  var HUBSPOT = window.HUBSPOT || {
-    portalId: "3283010",
-    forms: {},
-    submissions: {}
-  };
+var HUBSPOT = window.HUBSPOT || {
+  portalId: "3283010",
+  forms: {},
+  submissions: {}
+};
 
+(function ($) {
   $.getScript("https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js")
     .done(function (script, textStatus) {})
     .fail(function (jqxhr, settings, exception) {
@@ -147,9 +147,7 @@ var hbspt = window.hbspt;
         prequiredFailPath: undefined,
         redirectUrl: undefined,
         removeHubspotContext: true,
-        withQueryParams: true,
-        afterLoad: undefined,
-        afterSubmitted: undefined
+        withQueryParams: true
       };
       var settings = $.extend(defaults, options);
       return settings;
@@ -183,13 +181,9 @@ var hbspt = window.hbspt;
       };
 
       form.onFormReady = function ($form) {
-        $(selector).trigger("analytics.form_load", settings);
-
         $form._hsforms_transferCookies();
         $form._hsforms_transferQueryParams();
         $form._hsforms_transferFields(settings.fields);
-
-        if (options.afterLoad) $(document).trigger(options.afterLoad, settings);
 
         if (options.onFormReady) options.onFormReady($form);
       };
@@ -201,12 +195,7 @@ var hbspt = window.hbspt;
       };
 
       form.onFormSubmitted = function () {
-        $(selector).trigger("analytics.form_submitted", settings);
-
         if (options.onFormSubmitted) options.onFormSubmitted();
-
-        if (options.afterLoad)
-          $(document).trigger(options.afterSubmitted, settings);
 
         if (settings.redirectUrl) {
           var url = settings.redirectUrl;
@@ -220,7 +209,7 @@ var hbspt = window.hbspt;
                 fields: params,
                 dropEmpty: true
               });
-            url = url + "?" + Util.Browser.objectToQueryParamString(params);
+            url = url + Util.Browser.objectToQueryParamString(params);
           }
           window.location.href = url;
         }
