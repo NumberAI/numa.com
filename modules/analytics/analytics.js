@@ -11,11 +11,8 @@ var Analytics = new (function () {
     if (options.label) event.label = options.label;
     if (options.value) event.value = options.value;
 
-    if (window.datalayer) {
-      window.dataLayer.push(event);
-    } else {
-      console.log("analytics", event);
-    }
+    var dataLayer = dataLayer || [];
+    dataLayer.push(event);
   };
 
   this.trackForm = function (action, options) {
