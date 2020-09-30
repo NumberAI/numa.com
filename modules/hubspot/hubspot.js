@@ -197,8 +197,8 @@ var HUBSPOT = window.HUBSPOT || {
       form.onFormSubmitted = function () {
         if (options.onFormSubmitted) options.onFormSubmitted();
 
-        if (settings.redirectUrl) {
-          var url = settings.redirectUrl;
+        if (settings.nextUrl) {
+          var url = settings.nextUrl;
 
           if (settings.withQueryParams) {
             var queryParams = Util.Browser.queryParamStringToObject();
