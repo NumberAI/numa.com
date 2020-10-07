@@ -107,8 +107,9 @@ var HUBSPOT = window.HUBSPOT || {
     }
   };
 
-  $("[data-cta-id]").hubspotCTA();
-
+  $("[data-cta-id]").each(function (idx) {
+    $(this).hubspotCTA();
+  });
   // Forms
 
   $.fn.hubspotForm = function (options) {
