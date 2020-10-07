@@ -116,6 +116,13 @@
   font-weight: bold;
 }
 
+.sc-format-note .sc-item-content > .sc-content::before {
+  content: "Internal: ";
+  color: rgba(0, 0, 0, 0.65);
+  font-weight: bold;
+  display: inline;
+}
+
 .sc-format-order > * {
   color: #fff;
   background-color: #9c64e4;

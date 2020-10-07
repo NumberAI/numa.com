@@ -541,17 +541,8 @@ var jQuery = window.jQuery;
       "sc-vm-transcription"
     );
 
-    var scrubThumbEl = $("<div />").addClass("sc-vm-scrubThumb");
-    var scrubTrackEl = $("<div />")
-      .addClass("sc-vm-scrubTrack")
-      .wrapInner(scrubThumbEl);
-    var scrubberEl = $("<div />")
-      .addClass("sc-vm-scrubber")
-      .wrapInner(scrubTrackEl);
     var labelEl = $("<div>" + (settings.label || "Voicemail") + "</div>");
-    var playbackEl = $("<div />")
-      .addClass("sc-vm-playback")
-      .wrapInner([labelEl, scrubberEl]);
+    var playbackEl = $("<div />").addClass("sc-vm-playback").wrapInner(labelEl);
 
     return resultEl.wrapInner([transcriptionEl, playbackEl]);
   };
