@@ -54,7 +54,7 @@ var Util = new (function () {
       return;
     };
 
-    this.$loadScript = function ($, url, options) {
+    this.$loadScript = function ($, url, options, onSuccess) {
       options = $.extend(options || {}, {
         dataType: "script",
         cache: true,
@@ -63,7 +63,7 @@ var Util = new (function () {
 
       return $.ajax(options)
         .done(function (script, textStatus) {
-          if (textStatus === "success") return true;
+          if (textStatus === "success") onSuccess();
           throw new Error("Script failed to load: " + url + " : " + textStatus);
         })
         .fail(function (jqxhr, textStatus, errorThrown) {

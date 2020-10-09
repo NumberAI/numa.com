@@ -12,42 +12,54 @@ var HUBSPOT = window.HUBSPOT || {
 };
 
 (function ($) {
-  function getHubspotBaseScript(options) {
-    if (
-      Util.$loadScript(
+  function getHubspotBaseScript(options, onSuccess) {
+    Util.Browser.$loadScript(
+      $,
+      "https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js",
+      options,
+      function () {
+        HUBSPOT.hasScriptBase = true;
+        onSuccess();
+      }
+    );
+  }
+
+  function getHubspotCTAScript(options, onSuccess) {
+    getHubspotBaseScript(options, function () {
+      Util.Browser.$loadScript(
         $,
-        "https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js"
-      )
-    ) {
-      HUBSPOT.hasScriptBase = true;
-      return true;
-    }
+        "https://js.hscta.net/cta/current.js",
+        options,
+        function () {
+          HUBSPOT.hasScriptCtas = true;
+          onSuccess();
+        }
+      );
+    });
   }
 
-  function getHubspotCTAScript(options) {
-    if (Util.$loadScript($, "https://js.hscta.net/cta/current.js")) {
-      HUBSPOT.hasScriptCtas = true;
-      return true;
-    }
+  function getHubspotFormScript(options, onSuccess) {
+    getHubspotBaseScript(options, function () {
+      Util.Browser.$loadScript(
+        $,
+        "https://js.hsforms.net/forms/v2.js",
+        options,
+        function () {
+          HUBSPOT.hasScriptForms = true;
+          onSuccess();
+        }
+      );
+    });
   }
 
-  function getHubspotFormScript(options) {
-    if (Util.$loadScript($, "https://js.hscta.net/cta/current.js")) {
-      HUBSPOT.hasScriptForms = true;
-      return true;
-    }
-  }
-
-  if (!HUBSPOT.hasScriptBase) getHubspotBaseScript({ async: false });
+  getHubspotBaseScript();
 
   // CTA
 
   $.fn.hubspotCTA = function (options) {
     var base = this;
 
-    if (!HUBSPOT.hasScriptCtas) {
-      getHubspotCTAScript({ async: false });
-
+    getHubspotCTAScript({}, function () {
       var settings = init();
       if (!settings) return;
 
@@ -58,7 +70,7 @@ var HUBSPOT = window.HUBSPOT || {
 
       $(base).empty().append(el);
       hbspt.cta.load(settings.portalId, settings.id, {});
-    }
+    });
 
     function init() {
       var defaults = {
@@ -144,8 +156,7 @@ var HUBSPOT = window.HUBSPOT || {
 
     if (HUBSPOT.forms[options.formId]) return; // Form already exists
 
-    if (!HUBSPOT.hasScriptForms) {
-      getHubspotCTAScript({ async: false });
+    getHubspotFormScript({}, function () {
       var settings = init();
       if (!settings) return;
 
@@ -154,7 +165,7 @@ var HUBSPOT = window.HUBSPOT || {
 
       hbspt.forms.create(form);
       HUBSPOT.forms[options.formId] = true;
-    }
+    });
 
     function init() {
       var defaults = {
