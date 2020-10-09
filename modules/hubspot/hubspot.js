@@ -14,9 +14,7 @@ var HUBSPOT = window.HUBSPOT || {
       $,
       "https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js",
       options,
-      function () {
-        onSuccess();
-      }
+      onSuccess
     );
   }
 
@@ -26,9 +24,7 @@ var HUBSPOT = window.HUBSPOT || {
         $,
         "https://js.hscta.net/cta/current.js",
         options,
-        function () {
-          onSuccess();
-        }
+        onSuccess
       );
     });
   }
@@ -39,14 +35,12 @@ var HUBSPOT = window.HUBSPOT || {
         $,
         "https://js.hsforms.net/forms/v2.js",
         options,
-        function () {
-          onSuccess();
-        }
+        onSuccess
       );
     });
   }
 
-  getHubspotBaseScript();
+  getHubspotBaseScript({}, function () {});
 
   // CTA
 
