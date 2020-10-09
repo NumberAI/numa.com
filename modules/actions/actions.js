@@ -1,41 +1,46 @@
 var jQuery = window.jQuery;
 
-(function ($) {
-  $("[data-action='start_signup']").click(function (e, options) {
-    e.preventDefault();
+function getQueryParams() {
+  return Util.Browser.queryParamStringToObject();
+}
 
-    var base = this;
-    var defaults = {
-      signupUrl: "https://signup.numa.com",
-      methodAttr: "method",
-      modalAttr: "modal-selector",
-      signupModal: "#signup_modal"
-    };
-    var settings = $.extend(defaults, options);
+function getStoredParams() {
+  var names = [];
+  var result = {};
+  for (var i = 0; i < names.length; i++) {
+    result[names[i]] = Util.Browser.getCookieByName(names[i]);
+  }
+  return result;
+}
 
-    // Analytics
-    $(document).trigger("analytics.started_signup");
+function getParams() {
+  var defaults = {
+    brand: "numa",
+    product_offering: "ESSENTIALS"
+  };
+  return jQuery.extend(defaults, getStoredParams(), getQueryParams());
+}
 
-    // Determine signup method
+function hasRequiredParams(params) {
+  var required = ["email", "phone", "company", "product_offering"];
+  var keys = Object.keys(params);
+  for (var i = 0; i < required.length; i++) {
+    if (keys.indexOf(required[i]) < 0) return false;
+  }
+  return true;
+}
 
-    var METHODS = {
-      MODAL: "modal",
-      PAGE: "page"
-    };
-    var method = (
-      $(base).data(settings.methodAttr) || METHODS.MODAL
-    ).toLowerCase();
+function accountSignup() {
+  alert("foo");
+  var params = getParams();
+  var redirects = {
+    success: "https://inbox.numahelps.com",
+    failure: "/signup/start"
+  };
 
-    var modalEl;
-    if (method === METHODS.MODAL) {
-      var modal = $(base).data(settings.modalAttr) || settings.signupModal;
-      modalEl = $(modal);
-    }
+  var url = hasRequiredParams(params)
+    ? redirects.success + Util.Browser.objectToQueryParamString(params)
+    : redirects.failure;
 
-    if (METHODS.MODAL && modalEl.length) {
-      $(modalEl).trigger("toggleModal");
-    } else {
-      window.location.href = settings.signupUrl;
-    }
-  });
-})(jQuery);
+  console.log(url);
+}
