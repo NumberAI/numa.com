@@ -5,41 +5,60 @@ var hbspt = window.hbspt;
 var HUBSPOT = window.HUBSPOT || {
   portalId: "3283010",
   forms: {},
-  submissions: {}
+  submissions: {},
+  hasScriptBase: false,
+  hasScriptCtas: false,
+  hasScriptForms: false
 };
 
 (function ($) {
-  $.getScript("https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js")
-    .done(function (script, textStatus) {})
-    .fail(function (jqxhr, settings, exception) {
-      throw new Error("Failed to load Hubspot script");
-    });
+  function getHubspotBaseScript(options) {
+    if (
+      Util.$loadScript(
+        $,
+        "https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js"
+      )
+    ) {
+      HUBSPOT.hasScriptBase = true;
+      return true;
+    }
+  }
+
+  function getHubspotCTAScript(options) {
+    if (Util.$loadScript($, "https://js.hscta.net/cta/current.js")) {
+      HUBSPOT.hasScriptCtas = true;
+      return true;
+    }
+  }
+
+  function getHubspotFormScript(options) {
+    if (Util.$loadScript($, "https://js.hscta.net/cta/current.js")) {
+      HUBSPOT.hasScriptForms = true;
+      return true;
+    }
+  }
+
+  if (!HUBSPOT.hasScriptBase) getHubspotBaseScript({ async: false });
 
   // CTA
 
   $.fn.hubspotCTA = function (options) {
     var base = this;
 
-    $.getScript("https://js.hscta.net/cta/current.js")
-      .done(function (script, textStatus) {
-        if (textStatus === "success") {
-          var settings = init();
-          if (!settings) return;
+    if (!HUBSPOT.hasScriptCtas) {
+      getHubspotCTAScript({ async: false });
 
-          var el = createElement(settings);
-          if (!el) return;
+      var settings = init();
+      if (!settings) return;
 
-          eventHandlers(settings);
+      var el = createElement(settings);
+      if (!el) return;
 
-          $(base).empty().append(el);
-          hbspt.cta.load(settings.portalId, settings.id, {});
-        } else {
-          throw new Error("Failed to load Hubspot CTA script");
-        }
-      })
-      .fail(function (jqxhr, settings, exception) {
-        throw new Error("Failed to load Hubspot CTA script");
-      });
+      eventHandlers(settings);
+
+      $(base).empty().append(el);
+      hbspt.cta.load(settings.portalId, settings.id, {});
+    }
 
     function init() {
       var defaults = {
@@ -114,28 +133,28 @@ var HUBSPOT = window.HUBSPOT || {
 
   $.fn.hubspotForm = function (options) {
     if (!options.formId || !options.name)
-      throw new ReferenceError("Hubspot form not properly configured");
+      throw new ReferenceError(
+        "Hubspot form not properly configured : " +
+          " (id: " +
+          options.formId +
+          ") (name: " +
+          options.formnName +
+          ")"
+      );
 
     if (HUBSPOT.forms[options.formId]) return; // Form already exists
 
-    $.getScript("https://js.hsforms.net/forms/v2.js")
-      .done(function (script, textStatus) {
-        if (textStatus === "success") {
-          var settings = init();
-          if (!settings) return;
+    if (!HUBSPOT.hasScriptForms) {
+      getHubspotCTAScript({ async: false });
+      var settings = init();
+      if (!settings) return;
 
-          var selector = createElement(settings);
-          var form = setupForm(settings, selector);
+      var selector = createElement(settings);
+      var form = setupForm(settings, selector);
 
-          hbspt.forms.create(form);
-          HUBSPOT.forms[options.formId] = true;
-        } else {
-          throw new Error("Failed to load Hubspot Forms script");
-        }
-      })
-      .fail(function (jqxhr, settings, exception) {
-        throw new Error("Failed to load Hubspot Forms script");
-      });
+      hbspt.forms.create(form);
+      HUBSPOT.forms[options.formId] = true;
+    }
 
     function init() {
       var defaults = {

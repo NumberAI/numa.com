@@ -53,6 +53,30 @@ var Util = new (function () {
       }
       return;
     };
+
+    this.$loadScript = function ($, url, options) {
+      options = $.extend(options || {}, {
+        dataType: "script",
+        cache: true,
+        url: url
+      });
+
+      return $.ajax(options)
+        .done(function (script, textStatus) {
+          if (textStatus === "success") return true;
+          throw new Error("Script failed to load: " + url + " : " + textStatus);
+        })
+        .fail(function (jqxhr, textStatus, errorThrown) {
+          throw new Error(
+            "Script failed to load :" +
+              url +
+              " : " +
+              textStatus +
+              " : " +
+              errorThrown
+          );
+        });
+    };
   })();
 
   this.Objects = new (function () {
