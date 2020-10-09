@@ -5,10 +5,7 @@ var hbspt = window.hbspt;
 var HUBSPOT = window.HUBSPOT || {
   portalId: "3283010",
   forms: {},
-  submissions: {},
-  hasScriptBase: false,
-  hasScriptCtas: false,
-  hasScriptForms: false
+  submissions: {}
 };
 
 (function ($) {
@@ -18,7 +15,6 @@ var HUBSPOT = window.HUBSPOT || {
       "https://js.hs-scripts.com/" + HUBSPOT.portalId + ".js",
       options,
       function () {
-        HUBSPOT.hasScriptBase = true;
         onSuccess();
       }
     );
@@ -31,7 +27,6 @@ var HUBSPOT = window.HUBSPOT || {
         "https://js.hscta.net/cta/current.js",
         options,
         function () {
-          HUBSPOT.hasScriptCtas = true;
           onSuccess();
         }
       );
@@ -45,7 +40,6 @@ var HUBSPOT = window.HUBSPOT || {
         "https://js.hsforms.net/forms/v2.js",
         options,
         function () {
-          HUBSPOT.hasScriptForms = true;
           onSuccess();
         }
       );
@@ -150,7 +144,7 @@ var HUBSPOT = window.HUBSPOT || {
           " (id: " +
           options.formId +
           ") (name: " +
-          options.formnName +
+          options.formName +
           ")"
       );
 

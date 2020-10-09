@@ -63,7 +63,10 @@ var Util = new (function () {
 
       return $.ajax(options)
         .done(function (script, textStatus) {
-          if (textStatus === "success") onSuccess();
+          if (textStatus === "success") {
+            onSuccess();
+            return;
+          }
           throw new Error("Script failed to load: " + url + " : " + textStatus);
         })
         .fail(function (jqxhr, textStatus, errorThrown) {
